@@ -1,95 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Thái Hoàng Quốc Khánh</title>
+  <title>Phan Nghĩa Nhân</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Thư viện Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-o4phb1k2eJRY1O9gR5EY9ztq9JUEE/z9xPcI5DU8xJ1PzgA5F9gU5wrGQ4hljyoG" crossorigin="anonymous" />
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h3 {
+      text-align: center;
+      margin: 20px 0;
+    }
     #map {
       height: 500px;
+      margin: 0 10px 20px 10px;
+      border: 1px solid #ccc;
     }
+  
   </style>
 </head>
 <body>
+  <h3>Bản đồ: Tượng đài Cà Mau</h3>
+  <div id="map"></div>
 
-<h3>Kiểm Tra</h3>
-<div id="map"></div>
-<p>Tọa độ hiện tại: <span id="coords">Chưa chọn</span></p>
-<button onclick="saveLocation()"><i class="fas fa-save"></i> Lưu vị trí</button>
-<h4>Danh sách vị trí đã lưu:</h4>
-<ul id="saved-list"></ul>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([9.17619607770133, 105.1508474612119], 17);
 
-<!-- Thư viện Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-<script>
-  var map = L.map('map').setView([9.1783, 105.1514], 18);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-  }).addTo(map);
-
-  var currentMarker = null;
-  var currentLatLng = null;
-  var savedLocations = [];a
-
-  // Vẽ vòng tròn tại tượng đài Cà Mau
-  var circle = L.circle([9.176205, 105.150860], {
-    color: 'red',
-    fillColor: '#0000ff',
-    fillOpacity: 0.2,
-    radius: 60 // Bán kính là 60 mét, tương đương đường kính 120 mét
-  }).addTo(map);
-
-  // Thêm popup khi click vào vòng tròn
-  circle.on('click', function() {
-    circle.bindPopup("Vòng tròn đường kính 120m").openPopup();
-  });
-
-  // Marker tại tượng đài Cà Mau
-  var caMauMarker = L.marker([9.176205, 105.150860]).addTo(map).bindPopup("Tượng đài Cà Mau").openPopup();
-
-  // Click trên bản đồ
-  map.on('click', function(e) {
-    currentLatLng = e.latlng;
-
-    if (currentMarker) {
-      currentMarker.setLatLng(e.latlng);
-    } else {
-      currentMarker = L.marker(e.latlng).addTo(map);
-    }
-
-    document.getElementById('coords').textContent = `${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`;
-  });
-
-  // Hàm lưu vị trí
-  function saveLocation() {
-    if (!currentLatLng) {
-      alert("Bạn chưa chọn vị trí!");
-      return;
-    }
-
-    savedLocations.push(currentLatLng);
-
-    var marker = L.marker(currentLatLng).addTo(map);
-    var info = `Vị trí ${savedLocations.length}: ${currentLatLng.lat.toFixed(6)}, ${currentLatLng.lng.toFixed(6)}`;
-    marker.bindPopup(info).openPopup();
-
-    var li = document.createElement("li");
-    li.textContent = info;
-    document.getElementById("saved-list").appendChild(li);
-
-    currentMarker.remove();
-    currentMarker = null;
-    currentLatLng = null;
-    document.getElementById('coords').textContent = "Chưa chọn";
-  }
-</script>
-
+ 
+    var circle = L.circle([9.17619607770133, 105.1508474612119], {
+      color: 'red',          
+      fillColor: 'blue',       
+      fillOpacity: 0.3,        
+      radius: 120               
+    }).addTo(map).bindPopup('Vòng tròn bán kính 120m quanh tượng đài').openPopup();
+    L.marker([9.17619607770133, 105.1508474612119]).addTo(map).bindPopup('Tượng đài Cà Mau').openPopup();
+    
+  </script>
 </body>
 </html>
